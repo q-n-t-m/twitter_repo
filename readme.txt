@@ -6,4 +6,4 @@ The tool generates its output in csv format and its input is configurable to key
 
 There is more functionality in the pipeline.
 
-All it needs is a twitter API which you can get from api.twitter.com
+All it needs is a twitter API which you can get from apps.twitter.com
