@@ -2,10 +2,10 @@ import tweepy
 import csv
 import codecs
 
-CONSUMER_KEY = 'zky40BGkiFupnoXwEZGNyaKrl'
-CONSUMER_SECRET = '1qxHekOA7YtPaDZoSWOTnYKEezF6yxIWY5ZB3IgecP1fyMQOoB'
-ACCESS_KEY = '785800717697097729-vewiJRu2iM9XyVYwziSjDNx7JnHiamV'
-ACCESS_SECRET = 'Pf3PgVe0MkxUQYT4XSBQ5oKswfvozqpYg5ZClmeNWLcO8'
+CONSUMER_KEY = '' # enter your own in between the quotes
+CONSUMER_SECRET = '' # enter your own in between the quotes
+ACCESS_KEY = '' # enter your own in between the quotes
+ACCESS_SECRET = '' # enter your own in between the quotes
 
 # Create a twitter client (in accordance with twitter documentation):
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
@@ -19,7 +19,7 @@ api_client = tweepy.API(auth)
 
 # -------------------------------------------------------------------------------
 
-# 1. Main function incorporating all the other functions below:
+# 1. Main function incorporating all the other functions below - use this as a dispatcher:
 
 def generate_csv(expression_in, count_in, tweet_file_name, freq_file_name):
     tweets = get_tweets(expression_in, count_in) # calls on gets_tweets function
@@ -31,6 +31,12 @@ def generate_csv(expression_in, count_in, tweet_file_name, freq_file_name):
     write_freq_to_csv(frequencies, freq_file_name) # calls on write_freq_to_csv which writes 'clean' freq table to csv
 
     return
+
+# here's how to run it in your console:
+# import twitter
+# twitter.generate_csv("iphonex", 100, "iphonex.csv", "iphonex_freq.csv")
+
+# the functions below can be run in isolation but are all called upon in the above function...
 
 # -------------------------------------------------------------------------------
 
