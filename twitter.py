@@ -1,25 +1,26 @@
-import tweepy
-import csv
 import codecs
+import csv
+import tweepy
 
-CONSUMER_KEY = '' # enter your own in between the quotes
-CONSUMER_SECRET = '' # enter your own in between the quotes
-ACCESS_KEY = '' # enter your own in between the quotes
-ACCESS_SECRET = '' # enter your own in between the quotes
+CONSUMER_KEY = 'add your key here'
+CONSUMER_SECRET = 'add your secret here'
+ACCESS_KEY = 'add your key here'
+ACCESS_SECRET = 'add your secret here'
 
 # Create a twitter client (in accordance with twitter documentation):
 auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
 auth.set_access_token(ACCESS_KEY, ACCESS_SECRET)
 api_client = tweepy.API(auth)
 
-# I want to be able to auto-sort in descending order.
-# I want to add headers to the CSV output
 
-# add function to add to SQL db
+# to run this file inside of PyCharm (recommended), type as follows in the console:
+
+# import twitter
+# twitter.generate_csv("search_term", XX, "file_name.csv", "file_name.csv")
 
 # -------------------------------------------------------------------------------
 
-# 1. Main function incorporating all the other functions below - use this as a dispatcher:
+# 1. Main function incorporating all the other functions below:
 
 def generate_csv(expression_in, count_in, tweet_file_name, freq_file_name):
     tweets = get_tweets(expression_in, count_in) # calls on gets_tweets function
@@ -31,12 +32,6 @@ def generate_csv(expression_in, count_in, tweet_file_name, freq_file_name):
     write_freq_to_csv(frequencies, freq_file_name) # calls on write_freq_to_csv which writes 'clean' freq table to csv
 
     return
-
-# here's how to run it in your console:
-# import twitter
-# twitter.generate_csv("iphonex", 100, "iphonex.csv", "iphonex_freq.csv")
-
-# the functions below can be run in isolation but are all called upon in the above function...
 
 # -------------------------------------------------------------------------------
 
@@ -117,10 +112,17 @@ def aggregate_tweets(tweets_list_in):
 # -------------------------------------------------------------------------------
 # 8. Blacklist filter:
 
-def filter_words(blacklist, freq_list_in):
-    return [f for f in freq_list_in if (f[0] not in blacklist) and ('@' not in f[0][0])]
+def filter_words(my_blacklist, freq_list_in):
+    return [f for f in freq_list_in if (f[0] not in my_blacklist) and ('@' not in f[0][0])]
 
-my_blacklist = ['a', 'the', 'to', 'RT', 'with', 'have', 'for', 'it', 'and', 'we', 'that']
+my_blacklist = ['a','in',",","-",'of','is','Is','you','It','|','I','i','"','this','A','from','via','me','get','but','all','now','as','be','The','on','the','to','RT','with','have','for','it','and','we','that','your','by','can','our','will','way','We','what','When','Be','an','➡','their','You','In','Is','at','&amp;']
+
+
+#def filter_words(blacklist, freq_list_in):
+   # return [f for f in freq_list_in if (f[0] not in blacklist) and ('@' not in f[0][0])]
+
+   # blacklist = ['a', 'the', 'to', 'RT', 'with', 'have', 'for', 'it', 'and', 'we', 'that']
+
 
 # -------------------------------------------------------------------------------
 # 9. Frequency table:
@@ -147,6 +149,35 @@ def write_freq_to_csv(freq_table, csv_file_name):
     return
 
 # -------------------------------------------------------------------------------
+
+def twitter_dispatcher():
+    keywords = []
+    print("Hello, what would you like to know about?")
+    keyword = input("Give me a keyword?")
+    keywords.append(keyword)
+    keyword = input("would you like to add another keyword? Type N for no.")
+    while (keyword not in ['N', 'no', 'No', 'n']):
+        keywords.append(keyword)
+        keyword = input("would you like to add another keyword? Type N for no.")
+    freq = input("How many tweets per keyword do you want?")
+    freq = int(freq)
+
+    for keyword in keywords:
+        tweet_file_name = 'tweets.csv'
+        freq_file_name = keyword + '_freq.csv'
+        generate_csv(keyword, freq, tweet_file_name, freq_file_name)
+
+        #f = open('_freq.csv')
+        #dispersion = my_freq_parser(freq_file_name)
+
+# twitter_dispatcher calls out to generate_csv which in turn calls out to the other functions above
+# twitter_dispatcher outputs results into two csv files which adds keyword to the filename (this presents an issue so perhaps all output files should be called 'tweets.csv'
+# next stage is to have twitter_dispatcher open and tokenize the tweets file and create a lexical_dispersion table of the Top 20 keywords
+
+ #   tokens = nltk.word_tokenize(tweet_file_name)
+ #   text = nltk.Text(tokens)
+ #   text.dispersion_plot([freq_file_name])
+
 
 
 # get stuff to run in console:
